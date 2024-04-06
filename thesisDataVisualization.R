@@ -25,6 +25,7 @@ df3$Date <- as.Date(mdy(df3$Date))
 resectionCavity <- ggplot(data = df1, aes(x = Date, y = Resection)) +
   geom_point() +
   geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
   labs(x = "Date", y = "Resection Cavity Size (cm^3)") +  
   ggtitle("Resection Cavity Size over Time") +  
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -33,6 +34,7 @@ resectionCavity <- ggplot(data = df1, aes(x = Date, y = Resection)) +
 glucoseLevelsLong <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
   geom_point() +
   geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
   labs(x = "Date", y = "Glucose Level(mg/dL)") +  
   ggtitle("Glucose Levels over Time") +  
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
@@ -41,6 +43,7 @@ glucoseLevelsLong <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
 glucoseLevelsShort <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
   geom_point() +
   geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
   labs(x = "Date", y = "Glucose Level(mg/dL)") +  
   ggtitle("Glucose Levels over Time") +  
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
@@ -49,6 +52,7 @@ glucoseLevelsShort <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
 a1cLevels <- ggplot(data = df3, aes(x = Date, y = A1C)) +
   geom_point() +
   geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
   labs(x = "Date", y = "A1C Levels (%)") +  
   ggtitle("A1C Levels over Time") +  
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
