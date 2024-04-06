@@ -26,6 +26,16 @@ resectionCavity <- ggplot(data = df1, aes(x = Date, y = Resection)) +
   geom_point() +
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
   geom_text(aes(label = FLAIR), vjust = -0.5, hjust = 0.75, size = 5) +
   labs(x = "Date", y = "Resection Cavity Size (cc)") +  
   ggtitle("Resection Cavity Size over Time") +  
@@ -37,6 +47,16 @@ resectionCavityLog <- ggplot(data = df1, aes(x = Date, y = log)) +
   geom_point() +
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
   geom_text(aes(label = FLAIR), vjust = -0.5, hjust = 0.75, size = 5) +
   labs(x = "Date", y = "log10 Resection Cavity Size (cc)") +  
   ggtitle("Resection Cavity Size over Time") +  
@@ -48,6 +68,16 @@ glucoseLevelsLong <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
   geom_point() +
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
   labs(x = "Date", y = "Glucose Level(mg/dL)") +  
   ggtitle("Glucose Levels over Time") +  
   theme_bw() + 
@@ -58,18 +88,93 @@ glucoseLevelsShort <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
   geom_point() +
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
   labs(x = "Date", y = "Glucose Level(mg/dL)") +  
   ggtitle("Glucose Levels over Time") +  
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   xlim(as.Date("2022-09-01"), as.Date("2024-04-01"))  
 
-a1cLevels <- ggplot(data = df3, aes(x = Date, y = A1C)) +
+glucoseLevelsXShort <- ggplot(data = df2, aes(x = Date, y = ReadingGlucose)) +
   geom_point() +
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
+  labs(x = "Date", y = "Glucose Level(mg/dL)") +  
+  ggtitle("Glucose Levels over Time") +  
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  xlim(as.Date("2023-10-30"), as.Date("2024-04-01")) 
+
+a1cLevelsLong <- ggplot(data = df3, aes(x = Date, y = A1C)) +
+  geom_point() +
+  geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
   labs(x = "Date", y = "A1C Levels (%)") +  
   ggtitle("A1C Levels over Time") +  
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   xlim(as.Date("2020-10-01"), as.Date("2024-04-01"))  
+
+a1cLevelsShort <- ggplot(data = df3, aes(x = Date, y = A1C)) +
+  geom_point() +
+  geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date("2022-09-14")), linetype = "dashed", color = "red") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-01-05")), linetype = "dashed", color = "darkblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2024-02-01")), linetype = "dashed", color = "blue") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-11-30")), linetype = "dashed", color = "lightblue") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-10-10")), linetype = "dashed", color = "green") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-02-02")), linetype = "dashed", color = "lightgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2022-11-18")), linetype = "dashed", color = "darkgreen") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-02")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-03-29")), linetype = "dashed", color = "purple") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-05-27")), linetype = "dashed", color = "orange") +
+  geom_vline(xintercept = as.numeric(as.Date("2023-08-10")), linetype = "dashed", color = "yellow") +
+  labs(x = "Date", y = "A1C Levels (%)") +  
+  ggtitle("A1C Levels over Time") +  
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlim(as.Date("2022-09-01"), as.Date("2024-04-01"))  
+
+plots <- list(resectionCavity = resectionCavity, 
+              resectionCavityLog = resectionCavityLog, 
+              glucoseLevelsLong = glucoseLevelsLong, 
+              glucoseLevelsShort = glucoseLevelsShort, 
+              glucoseLevelsXShort = glucoseLevelsXShort, 
+              a1cLevelsShort = a1cLevelsShort,
+              a1cLevelsLong = a1cLevelsLong)
+for (plot_name in names(plots)) {
+  filename <- paste0("plot_", plot_name, ".png")
+  ggsave(filename, plot = plots[[plot_name]], path = ".", width = 8, height = 6) 
+}
+
+grid_plot <- plot_grid(plotlist = plots, ncol = 3)
+ggsave("plot_allGraphs.png", plot = grid_plot, path = ".", width = 16, height = 8)
