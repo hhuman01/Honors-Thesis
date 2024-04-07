@@ -1,12 +1,11 @@
-#install.packages("dplyr")
-#install.packages("ggplot2")
-#install.packages("cowplot")
-# install.packages("lubridate")
 library(cowplot)
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+library(dplyr)
+library(mgcv)
 
+# data manipulation
 df1 <- read.csv("tumorBurden.csv")
 df1$Date <- as.Date(mdy(df1$Date))
 
@@ -17,11 +16,9 @@ df3 <- read.csv("a1cLevels.csv")
 df3$Date <- as.Date(mdy(df3$Date))
 
 
-# merged_df <- merge(merge(df1, df2, by = "Date", all = TRUE), df3, by = "Date", all = TRUE)
-# View(merged_df)
+merged_df <- merge(merge(df1, df2, by = "Date", all = TRUE), df3, by = "Date", all = TRUE)
 
-# merged_df$Date <- as.Date(mdy(merged_df$Date))
-
+# plots
 resectionCavity <- ggplot(data = df1, aes(x = Date, y = Resection)) +
   geom_point() +
   geom_line() +
@@ -164,6 +161,7 @@ a1cLevelsShort <- ggplot(data = df3, aes(x = Date, y = A1C)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   xlim(as.Date("2022-09-01"), as.Date("2024-04-01"))  
 
+# combine plots into one grid
 plots <- list(resectionCavity = resectionCavity, 
               resectionCavityLog = resectionCavityLog, 
               glucoseLevelsLong = glucoseLevelsLong, 
@@ -178,3 +176,21 @@ for (plot_name in names(plots)) {
 
 grid_plot <- plot_grid(plotlist = plots, ncol = 3)
 ggsave("plot_allGraphs.png", plot = grid_plot, path = ".", width = 16, height = 8)
+
+# statistical analysis
+merged_df$MonthYear <- format(merged_df$Date, "%Y-%m")
+aggregated_df <- merged_df %>%
+  group_by(MonthYear) %>%
+  summarise(AvgResection = mean(Resection, na.rm = TRUE),
+            AvgReadingGlucose = mean(ReadingGlucose, na.rm = TRUE),
+            AvgA1C = mean(A1C, na.rm = TRUE))
+
+correlation_glucose <- cor(aggregated_df$AvgResection, aggregated_df$AvgReadingGlucose, use = "complete.obs")
+print(paste0("Correlation between resection cavity size and glucose levels: ", round(correlation_glucose, 2)))
+cor_test_glucose <- cor.test(aggregated_df$AvgResection, aggregated_df$AvgReadingGlucose)
+print(paste("p-value:", cor_test_glucose$p.value))
+
+correlation_a1c <- cor(aggregated_df$AvgResection, aggregated_df$AvgA1C, use = "complete.obs")
+print(paste0("Correlation between resection cavity size and A1C levels: ", round(correlation_a1c, 2)))
+cor_test_a1c <- cor.test(aggregated_df$AvgResection, aggregated_df$AvgA1C)
+print(paste("p-value:", cor_test_a1c$p.value))
