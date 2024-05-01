@@ -48,6 +48,12 @@ df4$End1 <- as.Date(df4$End1, format = "%m/%d/%Y")
 df4$Start2 <- as.Date(df4$Start2, format = "%m/%d/%Y")
 df4$End2 <- as.Date(df4$End2, format = "%m/%d/%Y")
 
+df5 <- read.csv("glucoseXSTimeline.csv")
+df5$Start1 <- as.Date(df5$Start1, format = "%m/%d/%Y")
+df5$End1 <- as.Date(df5$End1, format = "%m/%d/%Y")
+df5$Start2 <- as.Date(df5$Start2, format = "%m/%d/%Y")
+df5$End2 <- as.Date(df5$End2, format = "%m/%d/%Y")
+
 merged_df <- merge(merge(df1, df2, by = "Date", all = TRUE), df3, by = "Date", all = TRUE)
 
 # plots
@@ -66,7 +72,22 @@ timeline_plot <- ggplot(df4, aes(y = Treatment, color = Treatment)) +
         axis.ticks.y = element_blank(),
         axis.title.y = element_text(size = 12)) +
   xlim(as.Date("2020-10-01"), as.Date("2024-4-30"))
-df4 <- df4[, !(names(df4) %in% c("GapStart", "GapEnd"))]
+#df4 <- df4[, !(names(df4) %in% c("GapStart", "GapEnd"))]
+
+df5$Treatment <- factor(df5$Treatment, levels = desired_order)
+timeline_plot_xs <- ggplot(df5, aes(y = Treatment, color = Treatment)) +
+  geom_segment(aes(x = Start1, xend = End1, yend = Treatment), size = 5) +
+  geom_segment(aes(x = Start2, xend = End2, yend = Treatment), size = 5) +  
+  geom_text(aes(x = Start1, label = Treatment), vjust = 0.5, hjust = -0.1, size = 3, color = "black") +
+  labs(x = "Date",
+       y = element_blank(),
+       color = "Treatment") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_text(size = 12)) +
+  xlim(as.Date("2023-10-30"), as.Date("2024-4-30"))
 
 resectionCavity <- ggplot(data = df1, aes(x = Date, y = EllipResection)) +
   geom_point() +
@@ -182,23 +203,11 @@ gl_plot_grid <- create_plot_grid(glucoseLevelsLong, timeline_plot, '6 months', c
 
 gls_plot_grid <- create_plot_grid(glucoseLevelsShort, timeline_plot, '6 months', c(as.Date("2022-09-01"), as.Date("2024-04-30")))
 
-glxs_plot_grid <- create_plot_grid(glucoseLevelsXShort, timeline_plot, '6 months', c(as.Date("2023-10-30"), as.Date("2024-04-30")))
+glxs_plot_grid <- create_plot_grid(glucoseLevelsXShort, timeline_plot_xs, '6 months', c(as.Date("2023-10-30"), as.Date("2024-04-30")))
 
 a1cs_plot_grid <- create_plot_grid(a1cLevelsShort, timeline_plot, '6 months',  c(as.Date("2022-09-01"), as.Date("2024-04-30")))
 
 a1cl_plot_grid <- create_plot_grid(a1cLevelsLong, timeline_plot, '6 months',  c(as.Date("2020-10-01"), as.Date("2024-04-30")))
-
-
-
-resectionCavity_plot_grid <- plot_grid(resectionCavity, timeline_plot_res, ncol = 1, align = "v", axis = "l", rel_heights = c(2, 1))
-resectionCavity_plot_grid <- resectionCavity_plot_grid + 
-  plot_layout(heights = c(2, 1), nrow = 1, ncol = 1)
-
-glucoseLevelsLong2 <- plot_grid(glucoseLevelsLong, timeline_plot_gluC, ncol = 1, align = "v", axis = "l", rel_heights = c(2, 1))
-glucoseLevelsLong2 <- glucoseLevelsLong2 + 
-  plot_layout(heights = c(2, 1), nrow = 1, ncol = 1)
-
-# plot(glucoseLevelsLong2)
 
 
 # save all plots
@@ -235,37 +244,6 @@ for (name in names(plot_grids)) {
   ggsave(filename, plot = plot, width = 10, height = 6, units = "in")
 }
 
-
-#plot_grid <- plot_grid(
-#  resectionCavity, 
- # resectionCavityLog, 
- # glucoseLevelsLong, 
-#  glucoseLevelsShort, 
-#  glucoseLevelsXShort, 
-#  a1cLevelsShort,
-#  a1cLevelsLong,
-#  NULL,  # Use NULL for the placeholder for the bar plot
-#  timeline_plot,  # Add the bar plot
-#  ncol = 2,
-#  rel_heights = c(1, 0.22, 1, 1, 1, 1, 1, 0.5, 0.5)  # Adjust the relative heights of the plots
-#)
-
-#arrange all plots on one image - not working
-
-# plot_a1cLevelsLong <- arrangeGrob(a1cLevelsLong, widths = c(5, 1))
-# plot_grid <- plot_grid(
-#   resectionCavity, 
-#   resectionCavityLog, 
-#   glucoseLevelsLong, 
-#   glucoseLevelsShort, 
-#   glucoseLevelsXShort, 
-#   a1cLevelsShort,
-#   plot_a1cLevelsLong,  # Use the arranged plot
-#   ncol = 2
-# )
-# 
-# ggsave("plot_allGraphs.png", plot = plot_grid, path = ".", width = 12, height = 10)
-
 # statistical analysis
 merged_df$MonthYear <- format(merged_df$Date, "%Y-%m")
 aggregated_df <- merged_df %>%
@@ -273,13 +251,34 @@ aggregated_df <- merged_df %>%
   summarise(AvgEllipResection = mean(EllipResection, na.rm = TRUE),
             AvgReadingGlucose = mean(ReadingGlucose, na.rm = TRUE),
             AvgA1C = mean(A1C, na.rm = TRUE))
+#write.csv(aggregated_df, "aggregated_data.csv", row.names = FALSE)
 
-correlation_glucose <- cor(aggregated_df$AvgEllipResection, aggregated_df$AvgReadingGlucose, use = "complete.obs")
+df6 <- read.csv("aggregatedData2.csv")
+df6$Date <- as.Date(mdy(df6$AvgDate))
+
+correlation_glucose <- cor(df6$AvgEllipRes, df6$AvgGlucose, use = "complete.obs")
 print(paste0("Correlation between resection cavity size and glucose levels: ", round(correlation_glucose, 2)))
-cor_test_glucose <- cor.test(aggregated_df$AvgEllipResection, aggregated_df$AvgReadingGlucose)
+cor_test_glucose <- cor.test(df6$AvgEllipRes, df6$AvgGlucose)
 print(paste("p-value:", cor_test_glucose$p.value))
 
-correlation_a1c <- cor(aggregated_df$AvgEllipResection, aggregated_df$AvgA1C, use = "complete.obs")
+correlation_a1c <- cor(df6$AvgEllipRes, df6$AvgA1C2, use = "complete.obs")
 print(paste0("Correlation between resection cavity size and A1C levels: ", round(correlation_a1c, 2)))
-cor_test_a1c <- cor.test(aggregated_df$AvgEllipResection, aggregated_df$AvgA1C)
+cor_test_a1c <- cor.test(df6$AvgEllipRes, df6$AvgA1C2)
 print(paste("p-value:", cor_test_a1c$p.value))
+
+correlation_glucose_plot <- ggplot(df6, aes(x = AvgEllipRes, y = AvgGlucose)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Relationship between Resection Cavity Size and Glucose Levels", x = "Resection Cavity Size (cc)", y = "Glucose Levels (mg/dL)") +
+  theme_minimal()
+ggsave("correlation_glucose_plot.png", correlation_glucose_plot, width = 8, height = 6, units = "in", dpi = 300, bg = "white")
+
+
+df6_clean <- na.omit(df6[, c("AvgEllipRes", "AvgA1C2")])
+
+correlation_a1c_plot <- ggplot(df6_clean, aes(x = AvgEllipRes, y = AvgA1C2)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Relationship between Resection Cavity Size and A1C Levels", x = "Resection Cavity Size (cc)", y = "A1C Levels (%)") +
+  theme_minimal()
+ggsave("correlation_a1c_plot.png", correlation_a1c_plot, width = 8, height = 6, units = "in", dpi = 300, bg = "white")
