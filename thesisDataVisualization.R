@@ -266,19 +266,52 @@ print(paste0("Correlation between resection cavity size and A1C levels: ", round
 cor_test_a1c <- cor.test(df6$AvgEllipRes, df6$AvgA1C2)
 print(paste("p-value:", cor_test_a1c$p.value))
 
-correlation_glucose_plot <- ggplot(df6, aes(x = AvgEllipRes, y = AvgGlucose)) +
+#data frame for glucose - omits NA values 
+df6_clean1 <- na.omit(df6[, c("AvgEllipRes", "AvgGlucose")])
+
+#linear fit equation for glucose v resection cavity size
+lm_model_glucose <- lm(AvgGlucose ~ AvgEllipRes, data = df6_clean1)
+coef_glucose <- coef(lm_model_glucose)
+intercept_glucose <- coef_glucose[1]
+slope_glucose <- coef_glucose[2]
+equation_glucose <- paste("y =", round(slope_glucose, 2), "x +", round(intercept_glucose, 2))
+
+#correlation plot for glucose v resection cavity size
+correlation_glucose_plot <- ggplot(df6_clean1, aes(x = AvgEllipRes, y = AvgGlucose)) +
   geom_point() +
-  geom_line() +
+  geom_line()+
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = max(df6_clean1$AvgEllipRes), y = max(df6_clean1$AvgGlucose), label = equation_glucose, hjust = 1, vjust = 1, color = "blue") +  
   labs(title = "Relationship between Resection Cavity Size and Glucose Levels", x = "Resection Cavity Size (cc)", y = "Glucose Levels (mg/dL)") +
   theme_minimal()
+correlation_glucose_label <- paste("Correlation =", round(correlation_glucose, 2), ", p-value =", round(cor_test_glucose$p.value, 2))
+correlation_glucose_plot <- correlation_glucose_plot +
+  annotate("text", x = max(df6_clean1$AvgEllipRes), y = max(df6_clean1$AvgGlucose), label = equation_glucose, hjust = 1, vjust = 1, color = "blue") +
+  annotate("text", x = max(df6_clean1$AvgEllipRes), y = max(df6_clean1$AvgGlucose) - 20, label = correlation_glucose_label, hjust = 1, vjust = 1, color = "blue")
+
 ggsave("correlation_glucose_plot.png", correlation_glucose_plot, width = 8, height = 6, units = "in", dpi = 300, bg = "white")
 
+#data frame for a16 - omits NA values 
+df6_clean2 <- na.omit(df6[, c("AvgEllipRes", "AvgA1C2")])
 
-df6_clean <- na.omit(df6[, c("AvgEllipRes", "AvgA1C2")])
+#linear fit equation for a1c v resection cavity size
+lm_model_a1c <- lm(AvgA1C2 ~ AvgEllipRes, data = df6_clean2)
+coef_a1c <- coef(lm_model_a1c)
+intercept_a1c <- coef_a1c[1]
+slope_a1c <- coef_a1c[2]
+equation_a1c <- paste("y =", round(slope_a1c, 2), "x +", round(intercept_a1c, 2))
 
-correlation_a1c_plot <- ggplot(df6_clean, aes(x = AvgEllipRes, y = AvgA1C2)) +
+#correlation plot for a1c v resection cavity size
+correlation_a1c_plot <- ggplot(df6_clean2, aes(x = AvgEllipRes, y = AvgA1C2)) +
   geom_point() +
   geom_line() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = max(df6_clean2$AvgEllipRes), y = max(df6_clean2$AvgA1C2), label = equation_a1c, hjust = 1, vjust = 1, color = "blue") +  
   labs(title = "Relationship between Resection Cavity Size and A1C Levels", x = "Resection Cavity Size (cc)", y = "A1C Levels (%)") +
   theme_minimal()
+correlation_a1c_label <- paste("Correlation =", round(correlation_a1c, 2), ", p-value =", round(cor_test_a1c$p.value, 2))
+correlation_a1c_plot <- correlation_a1c_plot +
+  annotate("text", x = max(df6_clean2$AvgEllipRes), y = max(df6_clean2$AvgA1C2), label = equation_a1c, hjust = 1, vjust = 1, color = "blue") +
+  annotate("text", x = max(df6_clean2$AvgEllipRes), y = max(df6_clean2$AvgA1C2) - 0.5, label = correlation_a1c_label, hjust = 1, vjust = 1, color = "blue")
+
 ggsave("correlation_a1c_plot.png", correlation_a1c_plot, width = 8, height = 6, units = "in", dpi = 300, bg = "white")
